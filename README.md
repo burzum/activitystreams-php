@@ -14,6 +14,14 @@ A **Stream** contains multiple **Activities**. Those **Activities** are posted b
 
 A **Stream** can be created with **auto_subscribe** attribute, which marks it as **subscribed** by all **Objects**. **Objects** are still able to **unsubscribe** these **Streams**.
 
+## Refactoring Todo:
+
+* Add Phinx migrations
+* Refactor the classes and folders to work with PSR2
+* Adding phpunit
+* Write tests for the server
+* Refactor the SQL calls into repository classes
+
 ## Example
 
 ### Creating a new Client
