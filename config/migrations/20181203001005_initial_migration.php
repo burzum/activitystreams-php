@@ -26,7 +26,8 @@ class InitialMigration extends AbstractMigration {
 	 * with the Table class.
 	 */
 	public function change() {
-		$this->table('activities')
+		$this->table('activities', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('application_id', 'uuid', ['null' => true])
 			->addColumn('stream_id', 'uuid', ['null' => true])
 			->addColumn('actor_id', 'uuid', ['null' => true])
@@ -38,32 +39,37 @@ class InitialMigration extends AbstractMigration {
 			->addColumn('title', 'text', ['length' => 255, 'null' => false])
 			->create();
 
-		$this->table('applications')
+		$this->table('applications', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('name', 'string', ['length' => 128, 'null' => false])
 			->addColumn('secret', 'string', ['length' => 32, 'null' => false])
 			->create();
 
-		$this->table('objects')
+		$this->table('objects', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('application_id', 'uuid', ['null' => false])
 			->addColumn('object_type', 'string', ['null' => true, 'default' => null])
 			->addColumn('url', 'text', ['length' => 255, 'null' => true, 'default' => null])
 			->addColumn('values', 'text', ['length' => MysqlAdapter::TEXT_LONG])
 			->create();
 
-		$this->table('streams')
+		$this->table('streams', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('application_id', 'uuid', ['null' => false])
 			->addColumn('name', 'string', ['length' => 255, 'null' => true, 'default' => null])
 			->addColumn('update_timestamp', 'timestamp', ['null' => true, 'default' => null])
-			->addColumn('auto_subscribe', 'bool', ['default' => false])
+			->addColumn('auto_subscribe', 'boolean', ['default' => false])
 			->create();
 
-		$this->table('subscriptions')
+		$this->table('subscriptions', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('application_id', 'uuid', ['null' => false])
 			->addColumn('stream_id', 'uuid', ['null' => false])
 			->addColumn('object_id', 'uuid', ['null' => false])
 			->create();
 
-		$this->table('unsubscriptions')
+		$this->table('unsubscriptions', ['id' => false])
+			->addColumn('id', 'uuid', ['null' => false])
 			->addColumn('application_id', 'uuid', ['null' => false])
 			->addColumn('stream_id', 'uuid', ['null' => false])
 			->addColumn('object_id', 'uuid', ['null' => false])

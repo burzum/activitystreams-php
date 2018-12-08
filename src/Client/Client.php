@@ -1,8 +1,9 @@
 <?php
+namespace ActivityStreams\Client;
 
-require_once dirname(__FILE__) . '/AsResource.class.php';
+use Exception;
 
-class AsClient extends AsResource
+class Client extends Resource
 {
     protected $endpoint_url;
     protected $client;
@@ -33,17 +34,43 @@ class AsClient extends AsResource
     {
         $values['id'] = $application_id;
         $application_data = $this->post($this->getLink('applications'), $values);
-        return new AsApplication($this, $application_data);
+        return new Application($this, $application_data);
     }
 
-    public function deleteApplication(AsApplication $application)
+    public function deleteApplication(Application $application)
     {
         $this->delete($application->getLink('delete'), array(), array($application->getId(), $application->getSecret()));
     }
 
     protected function rawRequest($method, $url, array $options, array $values, array $auth)
     {
+
+    	$client = new \GuzzleHttp\Client();
+	    $res = $client->request($method, $url, [
+	        'auth' => ['user', 'pass']
+	    ]);
+	    var_export($res->getStatusCode());
+	    // "200"
+	    //echo $res->getHeader('content-type');
+	    // 'application/json; charset=utf8'
+	    $body = $res->getBody()->read($res->getBody()->getSize());
+		return json_decode($body, true);
+	    // {"type":"User"...'
+die();
+	    // Send an asynchronous request.
+	    $request = new \GuzzleHttp\Psr7\Request('GET', 'http://httpbin.org');
+	    $promise = $client->sendAsync($request)->then(function ($response) {
+	        echo 'I completed! ' . $response->getBody();
+	    });
+	    $promise->wait();
+    	/*
         $options[CURLOPT_URL] = $url;
+
+	    $andleHeaderLine = function( $curl, $header_line ) {
+	        echo "<br>YEAH: ".$header_line; // or do whatever
+	        return strlen($header_line);
+	    };
+
 
         $default_options = array();
         $default_options[CURLOPT_CUSTOMREQUEST] = $method;
@@ -81,6 +108,8 @@ class AsClient extends AsResource
 
         $ch = curl_init();
 
+	    curl_setopt($ch, CURLOPT_HEADERFUNCTION, $andleHeaderLine);
+
         foreach ($default_options as $option => $value)
         {
             curl_setopt($ch, $option, $value);
@@ -110,6 +139,7 @@ class AsClient extends AsResource
         }
 
         return $response;
+    	*/
     }
 
     public function get($url, array $values = array(), $auth = array())
@@ -162,11 +192,12 @@ class AsClient extends AsResource
 
     public static function autoload($class_name)
     {
-        $file = dirname(__FILE__) . '/' . $class_name . '.class.php';
+    	return;
+        $file = dirname(__FILE__) . '/' . $class_name . '.php';
         if (file_exists($file)) {
             include_once $file;
         }
     }
 }
 
-spl_autoload_register(array('AsClient', 'autoload'));
+//spl_autoload_register(array('AsClient', 'autoload'));

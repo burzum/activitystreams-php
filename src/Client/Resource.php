@@ -1,6 +1,12 @@
 <?php
+namespace ActivityStreams\Client;
 
-class AsResource
+use Exception;
+
+/**
+ * Resource
+ */
+class Resource
 {
     protected $data = array();
     

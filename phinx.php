@@ -1,5 +1,8 @@
 <?php
 require 'vendor/autoload.php';
+require 'config/config.php';
+
+use ActivityStreams\Server\Config;
 
 return [
 	'paths' => [
@@ -10,11 +13,11 @@ return [
 	'environments' => [
 		'default_database' => 'development',
 		'development' => [
-			'adapter: mysal',
-			'name' => 'devdb',
+			'adapter' => 'mysql',
+			'name' => 'activities',
 			'host' => 'localhost',
-			'user' => 'root',
-			'pass' => 'id10t',
+			'user' => Config::get('database.user'),
+			'pass' => Config::get('database.password'),
 			'port' => 3306,
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci'

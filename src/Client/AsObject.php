@@ -1,10 +1,11 @@
 <?php
+namespace ActivityStreams\Client;
 
-class AsObject extends AsResource
+class AsObject extends Resource
 {
     protected $application = null;
     
-    function __construct(AsApplication $application, array $data)
+    function __construct(Application $application, array $data)
     {
         parent::__construct($data);
         $this->application = $application;

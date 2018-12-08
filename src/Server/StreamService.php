@@ -1,6 +1,8 @@
 <?php
 namespace ActivityStreams\Server;
 
+use Exception;
+
 class StreamService extends HttpResourceService
 {
     public function getResourceNamePluralized()
@@ -52,7 +54,7 @@ class StreamService extends HttpResourceService
         if (!isset($values['stream_id'])) {
             throw new Exception('Cannot search for streams if no stream_id is given!');    
         }
-        
+
         $stream_id = $values['stream_id'];
         $application_id = $this->getAuthenticatedApplicationId();
 
@@ -71,7 +73,6 @@ class StreamService extends HttpResourceService
     public function getStream($stream_id, array $values = array())
     {
         $application_id = $this->getAuthenticatedApplicationId();
-        
         $db_service = Services::get('Database');
         $row = $db_service->getTableRow('streams', 'id = ? AND application_id = ?', array($stream_id, $application_id));
         return new Stream($row);

@@ -1,10 +1,13 @@
 <?php
+namespace ActivityStreams\Client;
 
-class AsApplication extends AsResource
+use Exception;
+
+class Application extends Resource
 {
     protected $client = null;
     
-    function __construct(AsClient $client, array $data)
+    function __construct(Client $client, array $data)
     {
         parent::__construct($data);
         $this->client = $client;
@@ -33,14 +36,14 @@ class AsApplication extends AsResource
             throw new Exception('Cannot find stream with id ' . $stream_id);
         }
         
-        return new AsStream($this, $streams[0]);
+        return new Stream($this, $streams[0]);
     }
 
     public function createStream($id, array $values = array())
     {
         $values['id'] = $id;
         $stream = $this->client->post($this->getLink('streams'), $values, $this->getAuth());
-        return new AsStream($this, $stream);
+        return new Stream($this, $stream);
     }
     
     public function recreateStream($id, array $values = array())
@@ -50,7 +53,7 @@ class AsApplication extends AsResource
             $stream = $this->getStreamById($id);
             $values['id'] = $id;
             $stream = $this->client->put($stream->getLink('update'), $values, $this->getAuth());
-            return new AsStream($this, $stream);
+            return new Stream($this, $stream);
         }
         catch (Exception $exception)
         {
@@ -58,7 +61,7 @@ class AsApplication extends AsResource
         }
     }
 
-    public function deleteStream(AsStream $stream)
+    public function deleteStream(Stream $stream)
     {
         $this->client->delete($stream->getLink('delete'), array(), $this->getAuth());
     }
@@ -111,7 +114,7 @@ class AsApplication extends AsResource
         $this->client->delete($activity->getLink('delete'), array(), $this->getAuth());
     }
     
-    public function createActivityInStream(AsStream $stream, array $values, AsObject $actor = null, AsObject $object = null, AsObject $target = null)
+    public function createActivityInStream(Stream $stream, array $values, AsObject $actor = null, AsObject $object = null, AsObject $target = null)
     {
         $values['stream_id'] = $stream->getId();
         if ($actor) {
@@ -156,13 +159,13 @@ class AsApplication extends AsResource
         
         foreach ($raw_feed['items'] as $raw_activity)
         {
-            $activities[] = new AsActivity($this, $raw_activity);
+            $activities[] = new Activity($this, $raw_activity);
         }
         
         return $activities;
     }
     
-    public function subscribeObjectToStream(AsObject $object, AsStream $stream)
+    public function subscribeObjectToStream(AsObject $object, Stream $stream)
     {
         $this->client->post($stream->getLink('subscribers'), array('object_id' => $object->getId()), $this->getAuth());
     }
@@ -173,7 +176,7 @@ class AsApplication extends AsResource
 
         foreach ($subscriptions as $subscription_data)
         {
-            $subscription = new AsSubscription($this, $subscription_data);
+            $subscription = new Subscription($this, $subscription_data);
             if ($subscription->getStreamId() == $stream->getId() && $subscription->getObjectId() == $object->getId()) {
                 $this->client->delete($subscription->getLink('unsubscribe'), array(), $this->getAuth());
             }

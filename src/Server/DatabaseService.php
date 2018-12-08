@@ -1,6 +1,9 @@
 <?php
 namespace ActivityStreams\Server;
 
+use Exception;
+use PDO;
+
 class DatabaseService
 {
     protected $pdo = null;
@@ -11,7 +14,11 @@ class DatabaseService
     protected function getPdo()
     {
         if (!$this->pdo) {
-            $this->pdo = new PDO(Config::get('database.dsn'), Config::get('database.user'), Config::get('database.password'));
+            $this->pdo = new PDO(
+                Config::get('database.dsn'),
+                Config::get('database.user'),
+                Config::get('database.password')
+            );
             $this->pdo->exec('SET NAMES utf8');
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }

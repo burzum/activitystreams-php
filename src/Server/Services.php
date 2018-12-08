@@ -10,14 +10,15 @@ class Services
     {
         if (!isset(self::$instances[$name])) {
             $service_class_name = $name . 'Service';
-            self::$instances[$name] = new $service_class_name;
+            $class = '\ActivityStreams\Server\\' . $service_class_name;
+            self::$instances[$name] = new $class;
         }
         return self::$instances[$name];
     }
 
     public static function autoload($className)
     {
-        $file = dirname(__FILE__) . '/' . $className . '.class.php';
+        $file = dirname(__FILE__) . '/' . $className . '.php';
         if (file_exists($file)) {
             include_once $file;
         }
@@ -28,4 +29,4 @@ class Services
     }
 }
 
-spl_autoload_register(array('Services', 'autoload'));
+spl_autoload_register(array(Services::class, 'autoload'));

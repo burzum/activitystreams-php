@@ -1,6 +1,8 @@
 <?php
 namespace ActivityStreams\Server;
 
+use Exception;
+
 class HttpResourceDispatcherService
 {
     public function dispatchRequest($verb, $path, array $parameters)

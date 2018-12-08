@@ -42,7 +42,6 @@ class ApplicationService extends HttpResourceService
     public function getApplication($application_id, array $values = array())
     {
         $logged_in_application_id = $this->getAuthenticatedApplicationId();
-        
         if ($logged_in_application_id !== $application_id) {
             throw new Exception('Cannot retrieve this application!');
         }

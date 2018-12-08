@@ -16,11 +16,14 @@ A **Stream** can be created with **auto_subscribe** attribute, which marks it as
 
 ## Refactoring Todo:
 
-* Add Phinx migrations
-* Refactor the classes and folders to work with PSR2
-* Adding phpunit
+* [x] Add Phinx migrations
+* [x] Refactor the classes and folders to work with PSR2
+* [x] Adding phpunit
 * Write tests for the server
+* Use a PSR middleware stack
 * Refactor the SQL calls into repository classes
+* Split server and client into two repositories
+* Add better documentation
 
 ## Example
 
